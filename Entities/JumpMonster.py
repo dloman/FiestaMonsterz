@@ -12,7 +12,7 @@ class JumpMonster(Entity, Movable, Drawable, Event):
   ##############################################################################
   def __init__(self, Window, xPosition, yPosition, InitialVelocity = 20):
     Entity.__init__(self)
-    InitialState = State2D(xPosition, yPosition)
+    InitialState = State2D(xPosition, yPosition, yAcceleration = 1)
     Movable.__init__(self, Movable2D(InitialState))
 
     DrawFunctor = DrawBlit(Window, "Images/Monsters/1.png")
