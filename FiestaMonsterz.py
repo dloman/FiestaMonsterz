@@ -22,9 +22,9 @@ if __name__ == "__main__":
   pygame.display.set_caption("Window")
   Clock = pygame.time.Clock()
   MainWorld = World(ScreenShape)
-  MainWorld.AddEntity(1, LoopingFaceRock(MainWorld, Window, 2200, 1070, -15))
+  MainWorld.AddEntity(1, LoopingFaceRock(MainWorld, Window, 2200, 1000, -15))
   MainWorld.AddEntity(2, JumpMonster(Window, 1100, 800))
-  MainWorld.AddEntity(3, Platform(Window, 1100, 800, 'ZigzagGrass_', 3))
+  MainWorld.AddEntity(3, Platform(Window, 1100, 1064, 'ZigzagGrass_', 33))
 
   while True:
     for Event in pygame.event.get():
