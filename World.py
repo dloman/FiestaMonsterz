@@ -11,6 +11,7 @@ class World(object):
   ##############################################################################
   def __init__(self, ScreenShape):
     self.ScreenWidth, self.ScreenHeight = ScreenShape
+    self.__IdToEntityMap = {}
     self.__Collidable = []
     self.__Movable = []
     self.__Drawable = []
@@ -42,7 +43,8 @@ class World(object):
     self.__ScreenHeight = ScreenHeight
 
   ##############################################################################
-  def AddEntity(self, Entity):
+  def AddEntity(self, Id, Entity):
+    self.__IdToEntityMap[Id] = Entity
     if HasMethod(Entity, 'Collision'):
       self.__Collidable.append(Entity)
 
@@ -62,8 +64,6 @@ class World(object):
 
   ##############################################################################
   def Update(self):
-    self.AddEventsToEventQueues()
-
     for Entity in self.__EventList:
       Entity.ProcessEvents()
 
@@ -115,9 +115,16 @@ class World(object):
       if KilledEntity in self.__Movable:
         self.__Movable.remove(KilledEntity)
 
+      self.__IdToEntityMap = \
+        {Key: Value for Key, Value in self.__IdToEntityMap.items() \
+          if Value is not KilledEntity}
+
   ##############################################################################
-  def AddEventsToEventQueues(self):
-    pass
+  def AddEventToQueue(self, Id, Event):
+    Entity = self.__IdToEntityMap[Id]
+    if Entity in self.__EventList:
+      Entity.AddEventToQueue(Event)
+
 
 ################################################################################
 ################################################################################

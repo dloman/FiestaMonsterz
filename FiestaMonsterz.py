@@ -4,6 +4,7 @@ import pygame
 
 from Entities.LoopingFaceRock import LoopingFaceRock
 from Entities.JumpMonster import JumpMonster
+from Entities.Platform import Platform
 from World import World
 
 gBlack = (0,0,0)
@@ -21,8 +22,9 @@ if __name__ == "__main__":
   pygame.display.set_caption("Window")
   Clock = pygame.time.Clock()
   MainWorld = World(ScreenShape)
-  MainWorld.AddEntity(LoopingFaceRock(MainWorld, Window, 2200, 1070, -15))
-  MainWorld.AddEntity(JumpMonster(Window, 1100, 800))
+  MainWorld.AddEntity(1, LoopingFaceRock(MainWorld, Window, 2200, 1070, -15))
+  MainWorld.AddEntity(2, JumpMonster(Window, 1100, 800))
+  MainWorld.AddEntity(3, Platform(Window, 1100, 800, 'ZigzagGrass_', 3))
 
   while True:
     for Event in pygame.event.get():
@@ -32,7 +34,7 @@ if __name__ == "__main__":
         if Event.key == pygame.K_ESCAPE or Event.key == 113:
           Quit()
         elif (Event.key==pygame.K_UP):
-          print 'might as well jump'
+          MainWorld.AddEventToQueue(2, 'jump')
     Window.fill(gBlack)
     MainWorld.Update()
     Clock.tick(50)
