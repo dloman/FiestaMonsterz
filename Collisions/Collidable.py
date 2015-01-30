@@ -3,9 +3,9 @@ from Utility.Utility import DoesntHaveMethod
 ################################################################################
 class Collidable(object):
   ##############################################################################
-  def __init__(self, CollisionFunctor, GetPositionFunctor):
+  def __init__(self, CollisionFunctor, GetRectangleFunctor):
     self.CollisionFunctor = CollisionFunctor
-    self.GetPositionFunctor = GetPositionFunctor
+    self.GetRectangleFunctor = GetRectangleFunctor
 
   ##############################################################################
   @property
@@ -21,23 +21,24 @@ class Collidable(object):
 
   ##############################################################################
   @property
-  def GetPositionFunctor(self):
-    return self.__GetPositionFunctor
+  def GetRectangleFunctor(self):
+    return self.__GetRectangleFunctor
 
   ##############################################################################
-  @GetPositionFunctor.setter
-  def GetPositionFunctor(self, GetPositionFunctor):
-    if DoesntHaveMethod(GetPositionFunctor, 'GetPosition'):
-      raise TypeError(str(type(GetPositionFunctor)) + 'must be callable')
-    self.__GetPositionFunctor = GetPositionFunctor
+  @GetRectangleFunctor.setter
+  def GetRectangleFunctor(self, GetRectangleFunctor):
+    if DoesntHaveMethod(GetRectangleFunctor, 'GetRectangle'):
+      raise TypeError( \
+        str(type(GetRectangleFunctor)) + 'GetRectangle must be defined')
+    self.__GetRectangleFunctor = GetRectangleFunctor
 
   ##############################################################################
   def Collision(self, CollidedObject):
-    self.__CollisionFunctor(CollidedObject, self.GetPosition())
+    self.__CollisionFunctor(CollidedObject, self.GetRectangle())
 
   ##############################################################################
-  def GetPosition(self):
-    self.__GetPositionFunctor.GetPostion()
+  def GetRectangle(self):
+    return self.__GetRectangleFunctor.GetRectangle()
 
 ################################################################################
 ################################################################################

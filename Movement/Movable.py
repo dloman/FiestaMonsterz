@@ -30,8 +30,7 @@ class Movable2D(object):
 
   ##############################################################################
   def __call__(self):
-    self.State.xPosition += self.State.xVelocity
-    self.State.yPosition += self.State.yVelocity
+    self.State.Rectangle.move_ip(self.State.xVelocity, self.State.yVelocity)
 
     self.State.xVelocity += self.State.xAcceleration
     self.State.yVelocity += self.State.yAcceleration

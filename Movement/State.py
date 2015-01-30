@@ -1,3 +1,4 @@
+import pygame
 ################################################################################
 ################################################################################
 class State2D(object):
@@ -8,9 +9,10 @@ class State2D(object):
    xVelocity = 0, \
    yVelocity = 0, \
    xAcceleration = 0,\
-   yAcceleration = 0):
-    self.xPosition = xPosition
-    self.yPosition = yPosition
+   yAcceleration = 0, \
+   Width = 0, \
+   Height = 0):
+    self.Rectangle = pygame.Rect((xPosition, yPosition), (Width, Height))
     self.xVelocity = xVelocity
     self.yVelocity = yVelocity
     self.xAcceleration = xAcceleration
@@ -19,16 +21,19 @@ class State2D(object):
   ##############################################################################
   def GetState(self):
     return \
-      self.xPosition, \
-      self.yPosition, \
+      self.Rectangle, \
       self.xVelocity, \
       self.yVelocity, \
       self.xAcceleration, \
       self.yAcceleration
 
   ################################################################################
+  def GetRectangle(self):
+    return self.Rectangle
+
+  ################################################################################
   def GetPosition(self):
-    return self.xPosition, self.yPosition
+    return self.Rectangle.x, self.Rectangle.y
 
   ################################################################################
   def GetVelocity(self):

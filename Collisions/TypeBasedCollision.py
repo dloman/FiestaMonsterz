@@ -1,24 +1,13 @@
-from Utility.Utility import DoesntHaveMethod
+from Utility.Utility import HasMethod
 ################################################################################
 ################################################################################
-class ResetEntity(object):
+class TypeBasedCollision(object):
   ##############################################################################
-  def __init__(self, ResetFunctor, Killable, World):
-    self.ResetFunctor = ResetFunctor
+  def __init__(self, Killable = None, TypeToActionMap = None):
+    self.__TypeToActionMap = {}
+    if TypeToActionMap is not None:
+      self.__TypeToActionMap = TypeToActionMap
     self.Killable = Killable
-    self.World = World
-
-  ###############################################################################
-  @property
-  def ResetFunctor(self):
-    return self.__ResetFunctor
-
-  ###############################################################################
-  @ResetFunctor.setter
-  def ResetFunctor(self, ResetFunctor):
-    if not callable(ResetFunctor):
-      raise TypeError(str(type(ResetFunctor)) + 'must be callable')
-    self.__ResetFunctor = ResetFunctor
 
   ###############################################################################
   @property
@@ -28,18 +17,22 @@ class ResetEntity(object):
   ###############################################################################
   @Killable.setter
   def Killable(self, Killable):
-    if DoesntHaveMethod(Killable, 'Kill'):
+    if Killable is None or HasMethod(Killable, 'Kill'):
+      self.__Killable = Killable
+    else:
       raise TypeError(str(type(Killable)) + 'must have Kill method')
-    self.__Killable = Killable
 
   ###############################################################################
   def __call__(self, CollidedObject, Rectangle):
     #TODO make this make more sense
-    if not CollidedObject:
-      self.__Killable.Kill(CollidedObject)
-      ResetEntity = self.__ResetFunctor()
-      self.World.AddEntity(None, ResetEntity)
+    if CollidedObject:
+      if type(CollidedObject) in self.__TypeToActionMap:
+        Action = self.__TypeToActionMap[type(CollidedObject)]
+        Action(CollidedObject.GetRectangle())
+    else:
+      if self.__Killable:
+        self.__Killable.Kill(CollidedObject)
+        print 'outside', (Rectangle.x, Rectangle.y), CollidedObject
 
 ################################################################################
 ################################################################################
-

@@ -3,7 +3,7 @@ from Utility.Utility import DoesntHaveMethod
 ################################################################################
 class Killable(object):
   ##############################################################################
-  def __init__(self, KillFunctor):
+  def __init__(self, KillFunctor = lambda x: True):
     self.KillFunctor = KillFunctor
     self.__IsDead = False
 

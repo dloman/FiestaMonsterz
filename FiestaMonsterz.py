@@ -22,9 +22,9 @@ if __name__ == "__main__":
   pygame.display.set_caption("Window")
   Clock = pygame.time.Clock()
   MainWorld = World(ScreenShape)
-  MainWorld.AddEntity(1, LoopingFaceRock(MainWorld, Window, 2200, 1000, -15))
-  MainWorld.AddEntity(2, JumpMonster(Window, 1100, 800))
-  MainWorld.AddEntity(3, Platform(Window, 1100, 1064, 'ZigzagGrass_', 33))
+  MainWorld.AddEntity(LoopingFaceRock(MainWorld, Window, 2200, 1000, -15))
+  MainWorld.AddEntity(Platform(Window, 1100, 1064, 'ZigzagGrass_', 33))
+  MainWorld.AddEntity(JumpMonster(Window, 1100, 300), 0)
 
   while True:
     for Event in pygame.event.get():
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         if Event.key == pygame.K_ESCAPE or Event.key == 113:
           Quit()
         elif (Event.key==pygame.K_UP):
-          MainWorld.AddEventToQueue(2, 'jump')
+          MainWorld.AddEventToQueue(0, 'jump')
     Window.fill(gBlack)
     MainWorld.Update()
     Clock.tick(50)

@@ -43,9 +43,8 @@ class World(object):
     self.__ScreenHeight = ScreenHeight
 
   ##############################################################################
-  def AddEntity(self, Id, Entity):
-    self.__IdToEntityMap[Id] = Entity
-    if HasMethod(Entity, 'Collision'):
+  def AddEntity(self, Entity, Id = None):
+    if HasMethod(Entity, 'Collision') and HasMethod(Entity, 'GetRectangle'):
       self.__Collidable.append(Entity)
 
     if HasMethod(Entity, 'Move'):
@@ -61,14 +60,12 @@ class World(object):
      HasMethod(Entity, 'ProcessEvents') and \
      HasMethod(Entity, 'AddEventToQueue'):
       self.__EventList.append(Entity)
+      self.__IdToEntityMap[Id] = Entity
 
   ##############################################################################
   def Update(self):
     for Entity in self.__EventList:
       Entity.ProcessEvents()
-
-    for Entity in self.__Movable:
-      Entity.Move()
 
     self.CheckForCollisions()
 
@@ -77,11 +74,14 @@ class World(object):
     for Entity in self.__Drawable:
       Entity.Draw()
 
+    for Entity in self.__Movable:
+      Entity.Move()
+
   ##############################################################################
   def CheckForCollisions(self):
     CollidableObjects = copy.copy(self.__Collidable)
     for Lhs, Rhs in combinations(CollidableObjects, 2):
-      if Lhs.GetPosition() == Rhs.GetPosition():
+      if Lhs.GetRectangle().colliderect(Rhs.GetRectangle()):
         Lhs.Collision(Rhs)
         Rhs.Collision(Lhs)
     for Entity in CollidableObjects:
