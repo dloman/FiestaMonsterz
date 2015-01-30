@@ -2,8 +2,9 @@
 ################################################################################
 class ImpactGround(object):
   ##############################################################################
-  def __init__(self, InitialState):
+  def __init__(self, InitialState, ImpactFunctor):
     self.State = InitialState
+    self.ImpactFunctor = ImpactFunctor
 
   ###############################################################################
   @property
@@ -18,9 +19,22 @@ class ImpactGround(object):
     self.__State = State
 
   ###############################################################################
+  @property
+  def ImpactFunctor(self):
+    return self.__ImpactFunctor
+
+  ###############################################################################
+  @ImpactFunctor.setter
+  def ImpactFunctor(self, ImpactFunctor):
+    if not callable(ImpactFunctor):
+      raise TypeError(str(type(ImpactFunctor)) + 'must be callable')
+    self.__ImpactFunctor = ImpactFunctor
+
+  ###############################################################################
   def __call__(self, Rectangle):
     self.State.yVelocity = 0
     self.State.Rectangle.y = Rectangle.y - self.State.Rectangle.height
+    self.__ImpactFunctor()
 
 ################################################################################
 ################################################################################

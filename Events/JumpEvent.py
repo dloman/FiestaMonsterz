@@ -2,7 +2,7 @@
 ################################################################################
 class JumpEvent(object):
   ##############################################################################
-  def __init__(self, State, InitialVelocity = 20, MaxNumberOfJumps = 1):
+  def __init__(self, State, InitialVelocity = -20, MaxNumberOfJumps = 2):
     self.State = State
     self.InitialVelocity = InitialVelocity
     self.MaxNumberOfJumps = MaxNumberOfJumps
@@ -11,7 +11,8 @@ class JumpEvent(object):
   ##############################################################################
   def ProcessEvent(self, Event):
     if self.NumberOfJumps < self.MaxNumberOfJumps:
-      self.State.yVelocity += self.InitialVelocity
+      self.State.yVelocity = self.InitialVelocity
+      self.NumberOfJumps += 1
 
   ##############################################################################
   def ResetJumpCount(self):

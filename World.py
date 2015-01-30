@@ -64,12 +64,13 @@ class World(object):
 
   ##############################################################################
   def Update(self):
-    for Entity in self.__EventList:
-      Entity.ProcessEvents()
 
     self.CheckForCollisions()
 
     self.RemoveKilledEntities()
+
+    for Entity in self.__EventList:
+      Entity.ProcessEvents()
 
     for Entity in self.__Drawable:
       Entity.Draw()

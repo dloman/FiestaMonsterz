@@ -29,11 +29,14 @@ class JumpMonster(Entity, Movable, Drawable, Event, Killable, Collidable):
     DrawFunctor = DrawBlit(Window, "Images/Monsters/1.png")
     Drawable.__init__(self, DrawFunctor, InitialState)
 
-    Event.__init__(self, JumpEvent(InitialState))
+    JumpFunctor = JumpEvent(InitialState)
+    Event.__init__(self, JumpFunctor)
 
     Killable.__init__(self)
 
-    TypeToActionMap = {Entities.Platform.Platform : ImpactGround(InitialState)}
+    TypeToActionMap = \
+      {Entities.Platform.Platform : \
+         ImpactGround(InitialState, JumpFunctor.ResetJumpCount)}
     CollisionFunctor = \
       TypeBasedCollision(self, TypeToActionMap = TypeToActionMap)
     Collidable.__init__(self, CollisionFunctor, InitialState)
