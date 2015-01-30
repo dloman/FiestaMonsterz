@@ -6,7 +6,8 @@ from Drawing.Drawable import Drawable
 from Drawing.DrawBlit import DrawBlit
 from Events.Event import Event
 from Events.JumpEvent import JumpEvent
-import Entities.Platform
+from Entities.Platform import Platform
+from Entities.LoopingFaceRock import LoopingFaceRock
 from Movement.Movable import Movable, Movable2D
 from Movement.State import State2D
 from Utility.Entity import Entity
@@ -35,8 +36,8 @@ class JumpMonster(Entity, Movable, Drawable, Event, Killable, Collidable):
     Killable.__init__(self)
 
     TypeToActionMap = \
-      {Entities.Platform.Platform : \
-         ImpactGround(InitialState, JumpFunctor.ResetJumpCount)}
+      {Platform : ImpactGround(InitialState, JumpFunctor.ResetJumpCount), \
+       LoopingFaceRock : self.Kill}
     CollisionFunctor = \
       TypeBasedCollision(self, TypeToActionMap = TypeToActionMap)
     Collidable.__init__(self, CollisionFunctor, InitialState)
