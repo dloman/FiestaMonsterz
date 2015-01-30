@@ -38,7 +38,7 @@ class ResetEntity(object):
     if not CollidedObject:
       self.__Killable.Kill(CollidedObject)
       ResetEntity = self.__ResetFunctor()
-      self.World.AddEntity(None, ResetEntity)
+      self.World.AddEntity(ResetEntity, None)
 
 ################################################################################
 ################################################################################
