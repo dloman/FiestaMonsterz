@@ -1,28 +1,29 @@
 from Utility.Utility import DoesntHaveMethod
 ################################################################################
 ################################################################################
-class ResetEntity(object):
+class DeadEntity(object):
   ##############################################################################
-  def __init__(self, ResetFunctor, World):
-    self.ResetFunctor = ResetFunctor
+  def __init__(self, DeathImage):
+    self.GenerateDeadEntityFunctor = GenerateDeadEntityFunctor
     self.World = World
 
   ###############################################################################
   @property
-  def ResetFunctor(self):
-    return self.__ResetFunctor
+  def GenerateDeadEntityFunctor(self):
+    return self.__GenerateDeadEntityFunctor
 
   ###############################################################################
-  @ResetFunctor.setter
-  def ResetFunctor(self, ResetFunctor):
-    if not callable(ResetFunctor):
-      raise TypeError(str(type(ResetFunctor)) + 'must be callable')
-    self.__ResetFunctor = ResetFunctor
+  @GenerateDeadEntityFunctor.setter
+  def GenerateDeadEntityFunctor(self, GenerateDeadEntityFunctor):
+    if not callable(GenerateDeadEntityFunctor):
+      raise TypeError(str(type(GenerateDeadEntityFunctor)) + 'must be callable')
+    self.__GenerateDeadEntityFunctor = GenerateDeadEntityFunctor
 
   ###############################################################################
   def __call__(self, DeathState, CollidedObject):
-    ResetEntity = self.__ResetFunctor()
-    self.World.AddEntity(ResetEntity)
+    DeadEntity = self.__GenerateDeadEntityFunctor()
+    self.World.AddEntity(DeadEntity)
 
 ################################################################################
 ################################################################################
+

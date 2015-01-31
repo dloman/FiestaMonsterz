@@ -23,11 +23,11 @@ class TypeBasedCollision(object):
       raise TypeError(str(type(DefaultAction)) + 'must be callable')
 
   ###############################################################################
-  def __call__(self, CollidedObject, Rectangle):
+  def __call__(self, CollidedObject, State):
     if type(CollidedObject) in self.__TypeToActionMap:
       Action = self.__TypeToActionMap[type(CollidedObject)]
       if callable(Action):
-        Action(CollidedObject.GetRectangle())
+        Action(CollidedObject, State)
     else:
       if self.__DefaultAction:
         self.__DefaultAction(CollidedObject)

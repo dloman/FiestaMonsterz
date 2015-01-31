@@ -2,21 +2,8 @@
 ################################################################################
 class ImpactGround(object):
   ##############################################################################
-  def __init__(self, InitialState, ImpactFunctor):
-    self.State = InitialState
+  def __init__(self, ImpactFunctor):
     self.ImpactFunctor = ImpactFunctor
-
-  ###############################################################################
-  @property
-  def State(self):
-    return self.__State
-
-  ###############################################################################
-  @State.setter
-  def State(self, State):
-    if not hasattr(State, 'yVelocity'):
-      raise TypeError(str(type(State)) + 'must have yVelocity value')
-    self.__State = State
 
   ###############################################################################
   @property
@@ -31,9 +18,10 @@ class ImpactGround(object):
     self.__ImpactFunctor = ImpactFunctor
 
   ###############################################################################
-  def __call__(self, Rectangle):
-    self.State.yVelocity = 0
-    self.State.Rectangle.y = Rectangle.y - self.State.Rectangle.height
+  def __call__(self, CollidedObject, State):
+    State.yVelocity = 0
+    State.Rectangle.y = \
+      CollidedObject.GetState().Rectangle.y - State.Rectangle.height
     self.__ImpactFunctor()
 
 ################################################################################

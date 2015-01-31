@@ -3,9 +3,9 @@ from Utility.Utility import DoesntHaveMethod
 ################################################################################
 class Collidable(object):
   ##############################################################################
-  def __init__(self, CollisionFunctor, GetRectangleFunctor):
+  def __init__(self, CollisionFunctor, GetStateFunctor):
     self.CollisionFunctor = CollisionFunctor
-    self.GetRectangleFunctor = GetRectangleFunctor
+    self.GetStateFunctor = GetStateFunctor
 
   ##############################################################################
   @property
@@ -21,24 +21,23 @@ class Collidable(object):
 
   ##############################################################################
   @property
-  def GetRectangleFunctor(self):
-    return self.__GetRectangleFunctor
+  def GetStateFunctor(self):
+    return self.__GetStateFunctor
 
   ##############################################################################
-  @GetRectangleFunctor.setter
-  def GetRectangleFunctor(self, GetRectangleFunctor):
-    if DoesntHaveMethod(GetRectangleFunctor, 'GetRectangle'):
-      raise TypeError( \
-        str(type(GetRectangleFunctor)) + 'GetRectangle must be defined')
-    self.__GetRectangleFunctor = GetRectangleFunctor
+  @GetStateFunctor.setter
+  def GetStateFunctor(self, GetStateFunctor):
+    if DoesntHaveMethod(GetStateFunctor, 'GetState'):
+      raise TypeError(str(type(GetStateFunctor)) + 'GetState must be defined')
+    self.__GetStateFunctor = GetStateFunctor
 
   ##############################################################################
   def Collision(self, CollidedObject):
-    self.__CollisionFunctor(CollidedObject, self.GetRectangle())
+    self.__CollisionFunctor(CollidedObject, self.GetState())
 
   ##############################################################################
-  def GetRectangle(self):
-    return self.__GetRectangleFunctor.GetRectangle()
+  def GetState(self):
+    return self.__GetStateFunctor.GetState()
 
 ################################################################################
 ################################################################################

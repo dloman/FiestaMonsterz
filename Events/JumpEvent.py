@@ -2,7 +2,7 @@
 ################################################################################
 class JumpEvent(object):
   ##############################################################################
-  def __init__(self, State, InitialVelocity = -20, MaxNumberOfJumps = 2):
+  def __init__(self, State, InitialVelocity, MaxNumberOfJumps = 2):
     self.State = State
     self.InitialVelocity = InitialVelocity
     self.MaxNumberOfJumps = MaxNumberOfJumps

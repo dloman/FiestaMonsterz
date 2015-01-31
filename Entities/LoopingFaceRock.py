@@ -28,8 +28,7 @@ class LoopingFaceRock(Entity, Movable, Drawable, Collidable, Killable):
 
     ResetFunctor = \
       partial(LoopingFaceRock, World, Window, xPosition, yPosition, xVelocity)
-    KillFunctor = ResetEntity(ResetFunctor, World)
-    Killable.__init__(self, KillFunctor)
+    Killable.__init__(self, ResetEntity(ResetFunctor, World))
 
     CollisionFuctor = \
       TypeBasedCollision(TypeToActionMap = {Wall : self.Kill})

@@ -44,7 +44,7 @@ class World(object):
 
   ##############################################################################
   def AddEntity(self, Entity, Id = None):
-    if HasMethod(Entity, 'Collision') and HasMethod(Entity, 'GetRectangle'):
+    if HasMethod(Entity, 'Collision') and HasMethod(Entity, 'GetState'):
       self.__Collidable.append(Entity)
 
     if HasMethod(Entity, 'Move'):
@@ -81,7 +81,7 @@ class World(object):
   def CheckForCollisions(self):
     CollidableObjects = copy.copy(self.__Collidable)
     for Lhs, Rhs in combinations(CollidableObjects, 2):
-      if Lhs.GetRectangle().colliderect(Rhs.GetRectangle()):
+      if Lhs.GetState().Rectangle.colliderect(Rhs.GetState().Rectangle):
         Lhs.Collision(Rhs)
         Rhs.Collision(Lhs)
 
@@ -99,21 +99,25 @@ class World(object):
         KilledEntities.append(Entity)
 
     for KilledEntity in KilledEntities:
-      if KilledEntity in self.__Killable:
-        self.__Killable.remove(KilledEntity)
+      self.RemoveEntity(KilledEntity)
 
-      if KilledEntity in self.__Drawable:
-        self.__Drawable.remove(KilledEntity)
+  ##############################################################################
+  def RemoveEntity(self, Entity):
+      if Entity in self.__Killable:
+        self.__Killable.remove(Entity)
 
-      if KilledEntity in self.__Collidable:
-        self.__Collidable.remove(KilledEntity)
+      if Entity in self.__Drawable:
+        self.__Drawable.remove(Entity)
 
-      if KilledEntity in self.__Movable:
-        self.__Movable.remove(KilledEntity)
+      if Entity in self.__Collidable:
+        self.__Collidable.remove(Entity)
+
+      if Entity in self.__Movable:
+        self.__Movable.remove(Entity)
 
       self.__IdToEntityMap = \
         {Key: Value for Key, Value in self.__IdToEntityMap.items() \
-          if Value is not KilledEntity}
+          if Value is not Entity}
 
   ##############################################################################
   def AddEventToQueue(self, Id, Event):
