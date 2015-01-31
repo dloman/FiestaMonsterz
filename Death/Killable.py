@@ -21,7 +21,6 @@ class Killable(object):
 
   ##############################################################################
   def Kill(self, CollidedObject):
-    print 'Killed = ', self, CollidedObject
     self.__KillFunctor(CollidedObject)
     self.IsDead = True
 

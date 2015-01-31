@@ -117,9 +117,10 @@ class World(object):
 
   ##############################################################################
   def AddEventToQueue(self, Id, Event):
-    Entity = self.__IdToEntityMap[Id]
-    if Entity in self.__EventList:
-      Entity.AddEventToQueue(Event)
+    if Id in self.__IdToEntityMap:
+      Entity = self.__IdToEntityMap[Id]
+      if Entity in self.__EventList:
+        Entity.AddEventToQueue(Event)
 
 ################################################################################
 ################################################################################
