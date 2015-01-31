@@ -36,10 +36,8 @@ class JumpMonster(Entity, Movable, Drawable, Event, Killable, Collidable):
     Killable.__init__(self)
 
     TypeToActionMap = \
-      {Platform : ImpactGround(InitialState, JumpFunctor.ResetJumpCount), \
-       LoopingFaceRock : self.Kill}
-    CollisionFunctor = \
-      TypeBasedCollision(self, TypeToActionMap = TypeToActionMap)
+      {Platform : ImpactGround(InitialState, JumpFunctor.ResetJumpCount)}
+    CollisionFunctor = TypeBasedCollision(self.Kill, TypeToActionMap)
     Collidable.__init__(self, CollisionFunctor, InitialState)
 
 ################################################################################

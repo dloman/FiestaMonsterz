@@ -1,11 +1,13 @@
 from functools import partial
 
 from Collisions.Collidable import Collidable
-from Collisions.ResetEntity import ResetEntity
+from Collisions.TypeBasedCollision import TypeBasedCollision
 from Drawing.Drawable import Drawable
 from Drawing.DrawBlit import DrawBlit
+from Entities.Wall import Wall
 from Utility.Entity import Entity
 from Death.Killable import Killable
+from Death.ResetEntity import ResetEntity
 from Movement.Movable import Movable, Movable2D
 from Movement.State import State2D
 from World import *
@@ -24,11 +26,13 @@ class LoopingFaceRock(Entity, Movable, Drawable, Collidable, Killable):
     DrawFunctor = DrawBlit(Window, "Images/Items/64-64_EnemyBlockIron.png")
     Drawable.__init__(self, DrawFunctor, InitialState)
 
-    Killable.__init__(self)
-
     ResetFunctor = \
       partial(LoopingFaceRock, World, Window, xPosition, yPosition, xVelocity)
-    CollisionFuctor = ResetEntity(ResetFunctor, self, World)
+    KillFunctor = ResetEntity(ResetFunctor, World)
+    Killable.__init__(self, KillFunctor)
+
+    CollisionFuctor = \
+      TypeBasedCollision(TypeToActionMap = {Wall : self.Kill})
     Collidable.__init__(self, CollisionFuctor, InitialState)
 
 ################################################################################

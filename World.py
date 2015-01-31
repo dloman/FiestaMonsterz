@@ -50,7 +50,7 @@ class World(object):
     if HasMethod(Entity, 'Move'):
       self.__Movable.append(Entity)
 
-    if HasMethod(Entity, 'IsDead'):
+    if HasMethod(Entity, 'Kill') and hasattr(Entity, 'IsDead'):
       self.__Killable.append(Entity)
 
     if HasMethod(Entity, 'Draw'):
@@ -64,7 +64,6 @@ class World(object):
 
   ##############################################################################
   def Update(self):
-
     self.CheckForCollisions()
 
     self.RemoveKilledEntities()
@@ -85,10 +84,6 @@ class World(object):
       if Lhs.GetRectangle().colliderect(Rhs.GetRectangle()):
         Lhs.Collision(Rhs)
         Rhs.Collision(Lhs)
-    for Entity in CollidableObjects:
-      xPosition, yPosition = Entity.GetPosition()
-      if not self.OnScreen(xPosition, yPosition):
-        Entity.Collision(None)
 
   ##############################################################################
   def OnScreen(self, xPosition, yPosition):
@@ -100,7 +95,7 @@ class World(object):
   def RemoveKilledEntities(self):
     KilledEntities = []
     for Entity in self.__Killable:
-      if Entity.IsDead():
+      if Entity.IsDead:
         KilledEntities.append(Entity)
 
     for KilledEntity in KilledEntities:
@@ -125,7 +120,6 @@ class World(object):
     Entity = self.__IdToEntityMap[Id]
     if Entity in self.__EventList:
       Entity.AddEventToQueue(Event)
-
 
 ################################################################################
 ################################################################################

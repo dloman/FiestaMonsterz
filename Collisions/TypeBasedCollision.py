@@ -3,36 +3,34 @@ from Utility.Utility import HasMethod
 ################################################################################
 class TypeBasedCollision(object):
   ##############################################################################
-  def __init__(self, Killable = None, TypeToActionMap = None):
+  def __init__(self, DefaultAction = None, TypeToActionMap = None):
     self.__TypeToActionMap = {}
     if TypeToActionMap is not None:
       self.__TypeToActionMap = TypeToActionMap
-    self.Killable = Killable
+    self.DefaultAction = DefaultAction
 
   ###############################################################################
   @property
-  def Killable(self):
-    return self.__Killable
+  def DefaultAction(self):
+    return self.__DefaultAction
 
   ###############################################################################
-  @Killable.setter
-  def Killable(self, Killable):
-    if Killable is None or HasMethod(Killable, 'Kill'):
-      self.__Killable = Killable
+  @DefaultAction.setter
+  def DefaultAction(self, DefaultAction):
+    if DefaultAction is None or callable(DefaultAction):
+      self.__DefaultAction = DefaultAction
     else:
-      raise TypeError(str(type(Killable)) + 'must have Kill method')
+      raise TypeError(str(type(DefaultAction)) + 'must be callable')
 
   ###############################################################################
   def __call__(self, CollidedObject, Rectangle):
-    #TODO make this make more sense
-    if CollidedObject:
-      if type(CollidedObject) in self.__TypeToActionMap:
-        Action = self.__TypeToActionMap[type(CollidedObject)]
+    if type(CollidedObject) in self.__TypeToActionMap:
+      Action = self.__TypeToActionMap[type(CollidedObject)]
+      if callable(Action):
         Action(CollidedObject.GetRectangle())
     else:
-      if self.__Killable:
-        self.__Killable.Kill(CollidedObject)
-        print 'outside', (Rectangle.x, Rectangle.y), CollidedObject
+      if self.__DefaultAction:
+        self.__DefaultAction(CollidedObject)
 
 ################################################################################
 ################################################################################
