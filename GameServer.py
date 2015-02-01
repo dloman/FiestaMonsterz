@@ -4,34 +4,28 @@ from twisted.internet import reactor, protocol
 from twisted.internet.task import LoopingCall
 from socket import *
 
-from FiestaMonsterz import FiestaMonsterz
+from MainMenu import MainMenu
 
 ################################################################################
 ################################################################################
-class GameServer(protocol.Protocol):
-  ##############################################################################
-  def connectionMade(self):
-    self.factory.Game.AddMonster(self)
-
-  ##############################################################################
-  def dataReceived(self, Data):
-    self.factory.Game.AddEvent(self, Data)
-
-################################################################################
-################################################################################
-class GameServerFactory(protocol.ServerFactory):
+class GameServer(protocol.DatagramProtocol):
   ##############################################################################
   def __init__(self, Game):
     self.Game = Game
 
+  ##############################################################################
+  def datagramReceived(self, Datagram, Address):
+    if Datagram == "Broadcast Received":
+      self.Game.AddMonster(Address[0])
+    else:
+      self.Game.AddEvent(Address[0], Datagram)
+
 ################################################################################
 ################################################################################
 if __name__ == '__main__':
-  FiestaMonster = FiestaMonsterz()
-  GameLoopingCall = LoopingCall(FiestaMonster.Update)
+  Game = MainMenu().GetRandomGame()
+  GameLoopingCall = LoopingCall(Game.Update)
   GameLoopingCall.start(1/60) #60 fps
 
-  factory = GameServerFactory(FiestaMonster)
-  factory.protocol = GameServer
-  reactor.listenTCP(42069, factory)
+  reactor.listenUDP(42069, GameServer(Game))
   reactor.run()
