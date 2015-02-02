@@ -12,11 +12,9 @@ gBlack = (0,0,0)
 ################################################################################
 class JumpGame():
   ##############################################################################
-  def __init__(self):
-    ScreenShape = (2200, 1600)
-    self.Window = pygame.display.set_mode(ScreenShape)
-    pygame.display.set_caption("Window")
-    self.MainWorld = World(ScreenShape)
+  def __init__(self, Window):
+    self.Window = Window
+    self.MainWorld = World(Window.get_size())
     self.MainWorld.AddEntity(Wall(0, 0, 0, 1600))
     self.MainWorld.AddEntity(Wall(1, 1600, 2200, 0))
 
