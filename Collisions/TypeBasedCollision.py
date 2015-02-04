@@ -4,9 +4,7 @@ from Utility.Utility import HasMethod
 class TypeBasedCollision(object):
   ##############################################################################
   def __init__(self, DefaultAction = None, TypeToActionMap = None):
-    self.__TypeToActionMap = {}
-    if TypeToActionMap is not None:
-      self.__TypeToActionMap = TypeToActionMap
+    self.__TypeToActionMap = TypeToActionMap or {}
     self.DefaultAction = DefaultAction
 
   ###############################################################################
